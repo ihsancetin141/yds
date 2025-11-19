@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Vocabulary Learner</title>
     <style>
-        /* Genel Sayfa Yapısı */
+        /* --- Genel Sayfa Yapısı --- */
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: #fff;
@@ -17,7 +17,7 @@
             padding: 20px;
         }
 
-        /* Üst Menü */
+        /* --- Üst Menü --- */
         .header {
             display: flex;
             justify-content: space-between;
@@ -48,7 +48,7 @@
             border: 3px solid #000;
         }
 
-        /* Skor Alanı */
+        /* --- Skor Alanı --- */
         .score-board {
             width: 100%;
             max-width: 500px;
@@ -59,7 +59,7 @@
             margin-bottom: 20px;
         }
 
-        /* Ana Kart (Kelime Alanı) */
+        /* --- Ana Kart (Kelime Alanı) --- */
         .flash-card {
             width: 100%;
             max-width: 400px;
@@ -83,7 +83,7 @@
             transform: scale(0.98);
         }
 
-        /* Örnek Cümle Kutusu */
+        /* --- Örnek Cümle Kutusu --- */
         .sentence-box {
             width: 100%;
             max-width: 400px;
@@ -98,7 +98,7 @@
             align-items: center;
         }
 
-        /* Türkçe Anlam Kutusu */
+        /* --- Türkçe Anlam Kutusu --- */
         .translation-box {
             width: 100%;
             max-width: 400px;
@@ -114,7 +114,7 @@
             visibility: hidden;
         }
 
-        /* Buton Alanları */
+        /* --- Buton Alanları --- */
         .interaction-area {
             width: 100%;
             max-width: 400px;
@@ -141,14 +141,19 @@
             font-weight: bold;
             cursor: pointer;
             font-size: 16px;
+            transition: background-color 0.2s;
         }
 
-        .btn-true { background-color: #28a745; }
-        .btn-false { background-color: #dc3545; }
-        .btn-true:hover { background-color: #218838; }
-        .btn-false:hover { background-color: #c82333; }
+        /* DAHA SOFT RENKLER */
+        /* Yeşil yerine Pastel Yeşil (#81c784) */
+        .btn-true { background-color: #81c784; color: white; border-color: #81c784; } 
+        /* Kırmızı yerine Pastel Kırmızı (#e57373) */
+        .btn-false { background-color: #e57373; color: white; border-color: #e57373; }
 
-        /* Quiz Şıkları */
+        .btn-true:hover { background-color: #66bb6a; }
+        .btn-false:hover { background-color: #ef5350; }
+
+        /* --- Quiz Şıkları --- */
         .quiz-options {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -170,10 +175,19 @@
             background-color: #e0e0e0;
         }
 
-        .correct-answer { background-color: #28a745 !important; color: white; }
-        .wrong-answer { background-color: #dc3545 !important; color: white; }
+        /* Quiz Cevap Renkleri (Soft) */
+        .correct-answer { 
+            background-color: #81c784 !important; 
+            color: white; 
+            border-color: #81c784 !important;
+        }
+        .wrong-answer { 
+            background-color: #e57373 !important; 
+            color: white; 
+            border-color: #e57373 !important;
+        }
 
-        /* Alt Navigasyon */
+        /* --- Alt Navigasyon --- */
         .nav-controls {
             width: 100%;
             max-width: 400px;
@@ -191,7 +205,7 @@
             cursor: pointer;
         }
 
-        /* Hata Kutusu */
+        /* --- Hata Kutusu --- */
         .error-log-box {
             width: 100%;
             max-width: 400px;
@@ -228,15 +242,15 @@
     </div>
 
     <div class="flash-card" id="mainCard" onclick="flipCard()">
-        <span id="cardText">Fracture</span>
+        <span id="cardText">...</span>
     </div>
 
     <div class="sentence-box" id="sentenceBox">
-        The structural integrity was compromised by a tiny stress fracture.
+        ...
     </div>
 
     <div class="translation-box" id="translationBox">
-        Çatlak, Kırık
+        ...
     </div>
 
     <div class="interaction-area" id="interactionArea">
@@ -253,21 +267,113 @@
     <script>
         // --- Veri Seti ---
         const wordList = [
-            { id: 1, word: "Fracture", turkish: "Çatlak, Kırık", synonyms: "Crack, Rupture, Fragment, Fissure", sentence: "The structural integrity was compromised by a tiny stress fracture." },
-            { id: 2, word: "Hypothesis", turkish: "Hipotez, Varsayım", synonyms: "Assumption, Postulate, Proposition", sentence: "The scientist formulated a hypothesis based on the initial data." },
-            { id: 3, word: "Derive", turkish: "Türetmek, Elde etmek", synonyms: "Deduce, Obtain, Elicit, Extract", sentence: "Many English words derive from Latin origins." },
-            { id: 4, word: "Magnitude", turkish: "Büyüklük, Önem", synonyms: "Extent, Scope, Scale, Size", sentence: "They didn't allow for the magnitude of the earthquake." },
-            { id: 5, word: "Integrate", turkish: "Bütünleştirmek", synonyms: "Combine, Unify, Incorporate", sentence: "The new software will integrate with existing systems." },
-            { id: 6, word: "Disperse", turkish: "Dağıtmak, Yaymak", synonyms: "Scatter, Diffuse, Disseminate", sentence: "Police used tear gas to disperse the crowd." },
-            { id: 7, word: "Correlate", turkish: "İlişkilendirmek", synonyms: "Associate, Relate, Connect", sentence: "Smoking is strongly correlated with heart disease." },
-            { id: 8, word: "Precede", turkish: "Önce gelmek", synonyms: "Antecede, Forego, Herald, Lead", sentence: "A brief introduction will precede the main presentation." },
-            { id: 9, word: "Subsequent", turkish: "Sonraki, Takip eden", synonyms: "Following, Succeeding, Consequent", sentence: "Subsequent events proved the theory to be correct." },
-            { id: 10, word: "Adjacent", turkish: "Bitişik, Komşu", synonyms: "Adjoining, Nearby, Contiguous", sentence: "We stayed in adjacent rooms at the hotel." }
+
+                { id: 1, word: "Fracture", turkish: "Çatlak, Kırık", synonyms: "Crack, Rupture, Fragment, Fissure", sentence: "The structural integrity was compromised by a tiny stress fracture." },
+    { id: 2, word: "Hypothesis", turkish: "Hipotez, Varsayım", synonyms: "Assumption, Postulate, Proposition, Conjecture", sentence: "The scientist formulated a hypothesis based on the initial data." },
+    { id: 3, word: "Derive", turkish: "Türetmek, Elde etmek", synonyms: "Deduce, Obtain, Elicit, Extract", sentence: "Many English words derive from Latin origins." },
+    { id: 4, word: "Magnitude", turkish: "Büyüklük, Önem", synonyms: "Extent, Scope, Scale, Size, Significance", sentence: "They didn't allow for the magnitude of the earthquake." },
+    { id: 5, word: "Integrate", turkish: "Bütünleştirmek, Birleştirmek", synonyms: "Combine, Unify, Incorporate, Assimilate", sentence: "The new software will integrate seamlessly with existing systems." },
+    { id: 6, word: "Disperse", turkish: "Dağıtmak, Yaymak", synonyms: "Scatter, Diffuse, Disseminate, Spread", sentence: "Police used tear gas to disperse the crowd." },
+    { id: 7, word: "Correlate", turkish: "İlişkilendirmek, Bağlantı kurmak", synonyms: "Associate, Relate, Connect, Correspond", sentence: "Smoking is strongly correlated with heart disease." },
+    { id: 8, word: "Precede", turkish: "Önce gelmek, Öncel olmak", synonyms: "Antecede, Forego, Herald, Lead", sentence: "A brief introduction will precede the main presentation." },
+    { id: 9, word: "Subsequent", turkish: "Sonraki, Takip eden", synonyms: "Following, Succeeding, Consequent, Later", sentence: "Subsequent events proved the theory to be correct." },
+    { id: 10, word: "Adjacent", turkish: "Bitişik, Komşu", synonyms: "Adjoining, Nearby, Contiguous, Next to", sentence: "We stayed in adjacent rooms at the hotel." },
+    { id: 11, word: "Elaborate", turkish: "Detaylandırmak, Ayrıntılı", synonyms: "Develop, Expand, Detailed, Complex", sentence: "Can you elaborate on your proposed solution?" },
+    { id: 12, word: "Mitigate", turkish: "Hafifletmek, Azaltmak", synonyms: "Alleviate, Diminish, Lessen, Soften", sentence: "We need to take steps to mitigate the environmental impact." },
+    { id: 13, word: "Converge", turkish: "Yakınsamak, Birleşmek", synonyms: "Meet, Come together, Focus, Gather", sentence: "The two roads converge at the entrance of the city." },
+    { id: 14, word: "Diverge", turkish: "Iraksamak, Ayrılmak", synonyms: "Separate, Deviate, Branch off, Split", sentence: "Their opinions diverge on the issue of taxation." },
+    { id: 15, word: "Constrain", turkish: "Kısıtlamak, Zorlamak", synonyms: "Restrict, Confine, Limit, Compel", sentence: "Budget limitations constrain our ability to expand the project." },
+    { id: 16, word: "Pervasive", turkish: "Yaygın, Nüfuz eden", synonyms: "Widespread, Extensive, Ubiquitous, Penetrating", sentence: "Corruption is a pervasive problem in that country." },
+    { id: 17, word: "Undergo", turkish: "Geçirmek, Yaşamak, Maruz kalmak", synonyms: "Experience, Sustain, Submit to, Endure", sentence: "The company will undergo a major restructuring next month." },
+    { id: 18, word: "Susceptible", turkish: "Hassas, Duyarlı, Savunmasız", synonyms: "Vulnerable, Prone, Receptive, Liable", sentence: "Elderly people are more susceptible to the flu." },
+    { id: 19, word: "Fluctuate", turkish: "Dalgalanmak, İnip çıkmak", synonyms: "Vary, Oscillate, Shift, Waver", sentence: "Vegetable prices fluctuate according to the season." },
+    { id: 20, word: "Emit", turkish: "Yaymak, Salmak (ışık, ısı vb.)", synonyms: "Radiate, Discharge, Release, Give off", sentence: "The factory emits harmful gases into the atmosphere." },
+    { id: 21, word: "Absorb", turkish: "Emmek, Soğurmak", synonyms: "Take in, Soak up, Imbibe, Assimilate", sentence: "Plants absorb carbon dioxide from the air." },
+    { id: 22, word: "Retain", turkish: "Tutmak, Muhafaza etmek", synonyms: "Keep, Hold, Preserve, Maintain", sentence: "The quiz allows you to see how much information you retain." },
+    { id: 23, word: "Compile", turkish: "Derlemek, Toplamak", synonyms: "Gather, Collect, Assemble, Accumulate", sentence: "It took years to compile the data for this report." },
+    { id: 24, word: "Validate", turkish: "Doğrulamak, Geçerli kılmak", synonyms: "Confirm, Authenticate, Verify, Sanction", sentence: "You need to validate your ticket before boarding the train." },
+    { id: 25, word: "Refute", turkish: "Çürütmek, Yalanlamak", synonyms: "Disprove, Invalidate, Contradict, Deny", sentence: "The lawyer brought evidence to refute the allegations." },
+    { id: 26, word: "Allocate", turkish: "Tahsis etmek, Ayırmak", synonyms: "Assign, Distribute, Designate, Apportion", sentence: "The government will allocate funds for education." },
+    { id: 27, word: "Substrate", turkish: "Yüzey, Temel madde", synonyms: "Medium, Base, Foundation, Material", sentence: "Enzymes bind to a specific substrate to catalyze reactions." },
+    { id: 28, word: "Catalyst", turkish: "Katalizör, Hızlandırıcı", synonyms: "Accelerator, Stimulant, Impetus, Trigger", sentence: "The protest served as a catalyst for political change." },
+    { id: 29, word: "Aggregate", turkish: "Toplam, Küme, Birleştirmek", synonyms: "Total, Collection, Cluster, Accumulate", sentence: "The aggregate demand in the economy is increasing." },
+    { id: 30, word: "Inherent", turkish: "Doğuştan gelen, Özünde olan", synonyms: "Innate, Intrinsic, Essential, Built-in", sentence: "There are inherent risks in mountain climbing." },
+    { id: 31, word: "Potent", turkish: "Güçlü, Etkili", synonyms: "Powerful, Efficacious, Strong, Vigorous", sentence: "The medicine is a potent weapon against infection." },
+    { id: 32, word: "Trivial", turkish: "Önemsiz, Basit", synonyms: "Minor, Insignificant, Negligible, Petty", sentence: "Don't get angry over trivial matters." },
+    { id: 33, word: "Explicit", turkish: "Açık, Belirgin", synonyms: "Clear, Obvious, Overt, Unambiguous", sentence: "He gave explicit instructions on how to proceed." },
+    { id: 34, word: "Implicit", turkish: "Kapalı, Örtülü, İma edilen", synonyms: "Implied, Tacit, Unspoken, Understood", sentence: "There was an implicit agreement between them." },
+    { id: 35, word: "Infer", turkish: "Çıkarım yapmak, Sonuç çıkarmak", synonyms: "Deduce, Conclude, Surmise, Gather", sentence: "I can infer from your silence that you are not happy." },
+    { id: 36, word: "Predominant", turkish: "Baskın, Çoğunlukta olan", synonyms: "Dominant, Primary, Prevailing, Main", sentence: "English is the predominant language in the scientific community." },
+    { id: 37, word: "Homogeneous", turkish: "Homojen, Tekdüze", synonyms: "Uniform, Consistent, Unvarying, Alike", sentence: "The population of the village is largely homogeneous." },
+    { id: 38, word: "Heterogeneous", turkish: "Heterojen, Türdeş olmayan", synonyms: "Diverse, Varied, Mixed, Non-uniform", sentence: "The class is a heterogeneous group of students from different backgrounds." },
+    { id: 39, word: "Quantify", turkish: "Nicelendirmek, Miktarını belirlemek", synonyms: "Measure, Calculate, Determine the amount", sentence: "It is difficult to quantify the emotional impact of the disaster." },
+    { id: 40, word: "Qualitative", turkish: "Niteliksel, Kalitatif", synonyms: "Descriptive, Non-numerical, Subjective", sentence: "The research focuses on qualitative analysis of customer feedback." },
+    { id: 41, word: "Quantitative", turkish: "Niceliksel, Kantitatif", synonyms: "Numerical, Measurable, Objective", sentence: "We need quantitative data to support our claims." },
+    { id: 42, word: "Erode", turkish: "Aşındırmak, Yıpratmak", synonyms: "Corrode, Wear away, Deteriorate, Degrade", sentence: "Wind and rain erode the soil over time." },
+    { id: 43, word: "Accumulate", turkish: "Birikmek, Toplanmak", synonyms: "Gather, Amass, Collect, Build up", sentence: "Dust tends to accumulate in corners." },
+    { id: 44, word: "Sustain", turkish: "Sürdürmek, Devam ettirmek", synonyms: "Maintain, Uphold, Preserve, Keep going", sentence: "The economy cannot sustain such high growth rates forever." },
+    { id: 45, word: "Comprise", turkish: "İçermek, Kapsamak, Oluşmak", synonyms: "Consist of, Include, Encompass, Be composed of", sentence: "The committee comprises representatives from all departments." },
+    { id: 46, word: "Exclude", turkish: "Hariç tutmak, Dışlamak", synonyms: "Omit, Rule out, Eject, Bar", sentence: "The price excludes tax and shipping costs." },
+    { id: 47, word: "Cease", turkish: "Durmak, Sona ermek", synonyms: "Stop, Terminate, Halt, Discontinue", sentence: "The company decided to cease operations in that region." },
+    { id: 48, word: "Initiate", turkish: "Başlatmak, Girişimde bulunmak", synonyms: "Begin, Commence, Launch, Start", sentence: "They will initiate a new marketing campaign next week." },
+    { id: 49, word: "Tentative", turkish: "Geçici, Kesin olmayan", synonyms: "Provisional, Experimental, Unconfirmed, Speculative", sentence: "We have a tentative agreement, but nothing is signed yet." },
+    { id: 50, word: "Robust", turkish: "Sağlam, Güçlü, Dayanıklı", synonyms: "Strong, Sturdy, Vigorous, Resilient", sentence: "The system is robust enough to handle heavy traffic." },
+    { id: 51, word: "Offset", turkish: "Dengelemek, Telafi etmek", synonyms: "Compensate for, Counteract, Balance, Neutralize", sentence: "The gains in one sector offset the losses in another." },
+    { id: 52, word: "Undermine", turkish: "Zarar vermek, Zayıflatmak", synonyms: "Weaken, Sabotage, Impair, Erode", sentence: "Criticism can undermine a student's confidence." },
+    { id: 53, word: "Allocate", turkish: "Tahsis etmek, Ayırmak", synonyms: "Distribute, Assign, Apportion, Grant", sentence: "You must allocate your time wisely during the exam." },
+    { id: 54, word: "Yield", turkish: "Ürün vermek, Sağlamak, Verim", synonyms: "Produce, Generate, Supply, Output", sentence: "The experiment is expected to yield interesting results." },
+    { id: 55, word: "Exceed", turkish: "Aşmak, Geçmek", synonyms: "Surpass, Transgress, Outstrip, Go beyond", sentence: "The final cost should not exceed the budget." },
+    { id: 56, word: "Inferior", turkish: "Aşağı, Düşük nitelikli", synonyms: "Subordinate, Lower, Poorer quality, Secondary", sentence: "These goods are of inferior quality compared to the others." },
+    { id: 57, word: "Superior", turkish: "Üstün, Yüksek nitelikli", synonyms: "Excellent, Better, Higher, Foremost", sentence: "His performance was superior to that of his competitors." },
+    { id: 58, word: "Transient", turkish: "Geçici, Fani", synonyms: "Ephemeral, Temporary, Short-lived, Brief", sentence: "The city has a large transient population of tourists." },
+    { id: 59, word: "Permanent", turkish: "Kalıcı, Daimi", synonyms: "Lasting, Enduring, Fixed, Stable", sentence: "Smoking can cause permanent damage to your lungs." },
+    { id: 60, word: "Synthesize", turkish: "Sentezlemek, Birleştirmek", synonyms: "Combine, Integrate, Construct, Merge", sentence: "Students should be able to synthesize information from various sources." },
+    { id: 61, word: "Decompose", turkish: "Ayrışmak, Bozunmak", synonyms: "Break down, Decay, Disintegrate, Rot", sentence: "Fungi help decompose organic matter in the forest." },
+    { id: 62, word: "Inevitable", turkish: "Kaçınılmaz", synonyms: "Unavoidable, Certain, Necessary, Sure", sentence: "Change is inevitable in the technology industry." },
+    { id: 63, word: "Contingent", turkish: "Bağlı, Koşullu", synonyms: "Dependent, Conditional, Subject to, Incidental", sentence: "Our success is contingent upon your support." },
+    { id: 64, word: "Paradigm", turkish: "Paradigma, Örnek, Model", synonyms: "Model, Pattern, Example, Framework", sentence: "The discovery shifted the scientific paradigm." },
+    { id: 65, word: "Scrutinize", turkish: "İncelemek, Dikkatle bakmak", synonyms: "Examine, Inspect, Analyze, Study carefully", sentence: "The auditors will scrutinize the company's accounts." },
+    { id: 66, word: "Deplete", turkish: "Tüketmek, Azaltmak", synonyms: "Exhaust, Consume, Drain, Reduce", sentence: "Overfishing can deplete the ocean's resources." },
+    { id: 67, word: "Replenish", turkish: "Yeniden doldurmak, Takviye etmek", synonyms: "Refill, Restock, Restore, Resupply", sentence: "You should drink water to replenish fluids after exercise." },
+    { id: 68, word: "Proliferate", turkish: "Hızla çoğalmak, Yayılmak", synonyms: "Multiply, Increase rapidly, Spread, Reproduce", sentence: "Rumors tended to proliferate when the boss was away." },
+    { id: 69, word: "Impair", turkish: "Bozmak, Zarar vermek, Zayıflatmak", synonyms: "Damage, Harm, Injure, Weaken", sentence: "Alcohol can impair your ability to drive." },
+    { id: 70, word: "Enhance", turkish: "Geliştirmek, Artırmak", synonyms: "Improve, Boost, Amplify, Elevate", sentence: "Good lighting can enhance the appearance of a room." },
+    { id: 71, word: "Arbitrary", turkish: "Keyfi, Rastgele", synonyms: "Random, Unreasoned, Capricious, Subjective", sentence: "The decision seemed arbitrary and unfair." },
+    { id: 72, word: "Empirical", turkish: "Deneysel, Ampirik", synonyms: "Observational, Experimental, Practical, Experience-based", sentence: "His theory is supported by empirical evidence." },
+    { id: 73, word: "Theoretical", turkish: "Teorik, Kuramsal", synonyms: "Abstract, Conceptual, Speculative, Academic", sentence: "The course covers both theoretical and practical aspects." },
+    { id: 74, word: "Albeit", turkish: "Her ne kadar, Olsa da", synonyms: "Though, Although, Even if", sentence: "He accepted the job, albeit with some hesitation." },
+    { id: 75, word: "Thereby", turkish: "Böylece, Bu suretle", synonyms: "Thus, Consequently, Accordingly, By that means", sentence: "He signed the contract, thereby agreeing to the terms." },
+    { id: 76, word: "Conversely", turkish: "Aksine, Tersine", synonyms: "Conversely, On the other hand, In contrast", sentence: "Some people love winter; conversely, others hate the cold." },
+    { id: 77, word: "Moreover", turkish: "Dahası, Üstelik", synonyms: "Furthermore, In addition, Besides, What's more", sentence: "The rent is cheap; moreover, the location is perfect." },
+    { id: 78, word: "Nonetheless", turkish: "Yine de, Buna rağmen", synonyms: "Nevertheless, However, Despite that, Still", sentence: "The ascent was difficult; nonetheless, we reached the summit." },
+    { id: 79, word: "Explicitly", turkish: "Açıkça, Belirgin bir şekilde", synonyms: "Clearly, Obviously, Unambiguously, Directly", sentence: "The rules explicitly forbid running in the hall." },
+    { id: 80, word: "Implicitly", turkish: "Üstü kapalı, Dolaylı olarak", synonyms: "Indirectly, Tacitly, Subtly, Unspokenly", sentence: "She implicitly trusted his judgment." },
+    { id: 81, word: "Verify", turkish: "Doğrulamak, Kontrol etmek", synonyms: "Confirm, Validate, Check, Test", sentence: "Please verify your password to continue." },
+    { id: 82, word: "Divert", turkish: "Saptırmak, Yönünü değiştirmek", synonyms: "Redirect, Deflect, Reroute, Turn away", sentence: "Traffic was diverted to a side road due to the accident." },
+    { id: 83, word: "Amplify", turkish: "Güçlendirmek, Büyütmek", synonyms: "Intensify, Enlarge, Boost, Magnify", sentence: "The microphone will amplify the speaker's voice." },
+    { id: 84, word: "Attenuate", turkish: "Zayıflatmak, Seyreltmek", synonyms: "Weaken, Thin out, Diminish, Reduce intensity", sentence: "Earplugs are used to attenuate high-volume noise." },
+    { id: 85, word: "Crucial", turkish: "Çok önemli, Hayati", synonyms: "Critical, Essential, Vital, Important", sentence: "Water is crucial for the survival of all living things." },
+    { id: 86, word: "Peripheral", turkish: "Çevresel, Önemsiz", synonyms: "Marginal, Minor, Secondary, Outer", sentence: "The main issue is cost; other concerns are peripheral." },
+    { id: 87, word: "Render", turkish: "Hale getirmek, Sağlamak, Sunmak", synonyms: "Make, Provide, Deliver, Furnish", sentence: "The shock rendered him speechless." },
+    { id: 88, word: "Coherent", turkish: "Tutarlı, Uyumlu", synonyms: "Logical, Consistent, Rational, Integrated", sentence: "He failed to present a coherent argument." },
+    { id: 89, word: "Vague", turkish: "Belirsiz, Muğlak", synonyms: "Unclear, Indefinite, Ambiguous, Fuzzy", sentence: "She gave a vague answer to my question." },
+    { id: 90, word: "Suppress", turkish: "Bastırmak, Önlemek", synonyms: "Inhibit, Stifle, Restrain, Prevent", sentence: "The government tried to suppress the news." },
+    { id: 91, word: "Elicit", turkish: "Ortaya çıkarmak, İfşa etmek", synonyms: "Draw out, Evoke, Obtain, Bring forth", sentence: "The questionnaire was designed to elicit specific information." },
+    { id: 92, word: "Constitute", turkish: "Oluşturmak, Kurmak", synonyms: "Form, Establish, Compose, Make up", sentence: "Twelve people constitute a jury." },
+    { id: 93, word: "Predicate", turkish: "Temellendirmek, İddia etmek", synonyms: "Base, Establish, Assert, Affirm", sentence: "The theory is predicated on recent findings." },
+    { id: 94, word: "Confine", turkish: "Sınırlamak, Kapatmak", synonyms: "Restrict, Enclose, Limit, Keep within bounds", sentence: "Please confine your remarks to the topic at hand." },
+    { id: 95, word: "Facilitate", turkish: "Kolaylaştırmak", synonyms: "Ease, Simplify, Expedite, Make possible", sentence: "Modern tools facilitate the learning process." },
+    { id: 96, word: "Hinder", turkish: "Engellemek, Mani olmak", synonyms: "Impede, Obstruct, Block, Prevent", sentence: "Bad weather may hinder our travel plans." },
+    { id: 97, word: "Intricate", turkish: "Karmaşık, Girift", synonyms: "Complex, Complicated, Elaborate, Detailed", sentence: "The watch has an intricate mechanism." },
+    { id: 98, word: "Subtle", turkish: "İnce, Hafif, Hemen fark edilmeyen", synonyms: "Slight, Delicate, Faint, Nuanced", sentence: "There is a subtle difference between the two shades of blue." },
+    { id: 99, word: "Volatile", turkish: "Uçucu, Değişken", synonyms: "Unstable, Evaporative, Capricious, Fickle", sentence: "The stock market can be highly volatile during a crisis." },
+    { id: 100, word: "Stable", turkish: "Kararlı, Sabit", synonyms: "Constant, Firm, Fixed, Unchanging", sentence: "The patient's condition is now stable." }
+
         ];
 
         // --- Durum Değişkenleri ---
-        let currentMode = "flashcard"; // 'flashcard' veya 'quiz'
-        let currentIndex = 0;
+        let currentMode = "flashcard"; 
+        let currentIndex = 0; 
         let isFlipped = false; 
         let scores = { true: 0, false: 0 };
         let errorList = [];
@@ -287,6 +393,9 @@
 
         // --- Başlangıç ---
         function init() {
+            // Sayfa açılışında RASTGELE bir kelime seç
+            currentIndex = Math.floor(Math.random() * wordList.length);
+            
             renderCard();
             updateScore();
         }
@@ -315,6 +424,7 @@
         }
 
         function nextCard() {
+            // Sırayla değil, rastgele gitmek ister misin? Şimdilik listede sırayla dönüyor.
             currentIndex = (currentIndex + 1) % wordList.length;
             isFlipped = false;
             renderCard();
@@ -393,7 +503,6 @@
                 logError(wordList[currentIndex]);
             }
             updateScore();
-            // Uyarı YOK, direkt sonraki karta geç
             nextCard(); 
         }
 
@@ -402,10 +511,18 @@
             const container = document.createElement('div');
             container.className = "quiz-options";
 
+            // Doğru cevap
             let options = [correctData];
+            
+            // Yanlış cevapları havuzdan RASTGELE seç
+            // Mevcut kelime hariç diğerlerini al
             let tempPool = wordList.filter(w => w.id !== correctData.id);
+            // Havuzu karıştır
             tempPool.sort(() => 0.5 - Math.random());
+            // İlk 3 tanesini al (Böylece her seferinde farklı şıklar gelebilir)
             options = options.concat(tempPool.slice(0, 3));
+            
+            // Şıkları kendi içinde tekrar karıştır (Doğru cevap hep A şıkkı olmasın)
             options.sort(() => 0.5 - Math.random());
 
             options.forEach(opt => {
@@ -426,22 +543,19 @@
             if (selectedId === correctId) {
                 scores.true += 1;
                 btnElement.classList.add('correct-answer');
-                updateScore();
-                // Quiz modunda doğru bilinince otomatik geçsin mi?
-                // Genelde quizde cevabı görmek isteriz, o yüzden otomatik geçişi buraya koymuyorum. 
-                // Kullanıcı "Next" tuşuna basar.
             } else {
                 scores.false += 1;
                 btnElement.classList.add('wrong-answer');
                 logError(wordList[currentIndex]);
                 
+                // Doğru olanı göster
                 buttons.forEach(b => {
                     if (b.innerText === wordList.find(w => w.id === correctId).turkish) {
                         b.classList.add('correct-answer');
                     }
                 });
-                updateScore();
             }
+            updateScore();
         }
 
         init();
